@@ -13,9 +13,11 @@ file = open(filename, newline='', encoding='utf-8')
 reader = csv.DictReader(file)
 
 # Захист від повторного заповнення, надоїло вручну бахати
-table_list = ['Pricing', 'Type_', 'App_', 'Category', 'Genre']
+table_list = ['Pricing', 'Type', 'App', 'Category', 'Genre']
 for i in table_list:
-    cursor.execute("delete from", i)
+    call = "delete from "+i
+    print(call)
+    cursor.execute(call)
 
 # Костиль для додаткових таблиць, з кількістю елементів в рази меншою за кількість строк в .csv
 types = []
@@ -31,14 +33,14 @@ try:
         app_name = row['App']
         app_category = row['Category']
         app_genre = row['Genres']
-        razmer = row['Size']
+        app_size = row['Size']
         last_updated = row['Last Updated']
         current_ver = row['Current Ver']
         pricing_type = row['Type']
         price = row['Price']
 
         # Захист від зломаних колонок
-        attr_list = [app_name, app_category, app_genre, razmer, last_updated, current_ver, pricing_type, price]
+        attr_list = [app_name, app_category, app_genre, app_size, last_updated, current_ver, pricing_type, price]
         
         for attr in attr_list:
             if attr == '':
@@ -52,7 +54,7 @@ try:
         # Костиль для додаткових таблиць, з кількістю елементів в рази меншою за кількість строк в .csv
         if pricing_type not in types:
             types.append(pricing_type)
-            query = """INSERT INTO Type_(pricing_type) VALUES (:pricing_type)"""
+            query = """INSERT INTO Type(pricing_type) VALUES (:pricing_type)"""
             cursor.execute(query, pricing_type = pricing_type)
         if app_category not in categories:
             categories.append(app_category)
@@ -65,10 +67,10 @@ try:
 
         # Дякую Боже, що датасет (майже)без помилок
         query = """
-        INSERT INTO App_(app_name, app_category, app_genre, size_, last_updated, current_ver)
-        VALUES (:app_name, :app_category, :app_genre, :size_, :last_updated, :current_ver)
+        INSERT INTO App(app_name, app_category, app_genre, app_size, last_updated, current_ver)
+        VALUES (:app_name, :app_category, :app_genre, :app_size, :last_updated, :current_ver)
         """
-        cursor.execute(query, app_name = app_name, app_category = app_category, app_genre = app_genre, size_ = razmer, last_updated = last_updated, current_ver = current_ver)
+        cursor.execute(query, app_name = app_name, app_category = app_category, app_genre = app_genre, app_size = app_size, last_updated = last_updated, current_ver = current_ver)
         query = """
         INSERT INTO Pricing(app_name, pricing_type, price)
         VALUES (:app_name, :pricing_type, :price)

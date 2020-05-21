@@ -25,9 +25,9 @@ SELECT
 	app_category,
 	COUNT(*) AS quantity
 FROM
-	App_, Pricing
+	App, Pricing
 WHERE
-	App_.app_name = Pricing.app_name 
+	App.app_name = Pricing.app_name 
 	AND
 	CAST(
 		CASE
@@ -88,7 +88,7 @@ SELECT
 	SUBSTR(last_updated,-4,4) AS last_updated_year,
 	COUNT(*) AS amount
 FROM
-	App_
+	App
 GROUP BY
 	SUBSTR(last_updated,-4,4)
 ORDER BY

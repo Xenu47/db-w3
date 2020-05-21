@@ -1,13 +1,13 @@
 CREATE VIEW APP_INFO AS
     SELECT
-        App_.app_name,
+        App.app_name,
         app_category,
         app_genre,
-        size_,
+        app_size,
         last_updated,
         current_ver,
         Pricing.pricing_type,
         Pricing.price
     FROM
-        App_
-        INNER JOIN Pricing ON App_.app_name = Pricing.app_name;
+        App
+        INNER JOIN Pricing ON App.app_name = Pricing.app_name;
