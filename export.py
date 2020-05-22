@@ -7,7 +7,7 @@ database = "localhost"
 connection = cx_Oracle.connect(username, password, database, encoding='UTF-8') #ãããããããããããã
 cursor = connection.cursor()
 
-table_list = ['Pricing', 'Type', 'App', 'Category', 'Genre']
+table_list = ['Category', 'Genre', 'Type', 'Pricing',  'App']
 
 try:
     for table in table_list:
